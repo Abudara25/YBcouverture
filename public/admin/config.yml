@@ -4,7 +4,7 @@ backend:
   branch: main
   # Relais OAuth déployé séparément (GitHub n'autorise pas un site statique à
   # s'authentifier seul). Voir NOTES-DECAP-CMS.md, section OAuth.
-  base_url: "REMPLACER_PAR_URL_PROJET_OAUTH" # ex. https://ybcouverture-cms-oauth.vercel.app
+  base_url: "https://ybcouverture-cms.vercel.app"
 
 # Permet de tester l'interface en local avec `npx decap-server` (aucun OAuth requis en local).
 local_backend: true

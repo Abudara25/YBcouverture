@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 
-Sitemap: https://www.ybcouverture.fr/sitemap-index.xml
+Sitemap: https://y-bcouverture.vercel.app/sitemap-index.xml
