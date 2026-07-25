@@ -1,0 +1,77 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  heading?: string;
+  text?: string;
+  showPhone?: boolean;
+  alloVoisinsOnly?: boolean;
+}
+
+const {
+  heading = 'Un projet ou une urgence toiture ?',
+  text = 'Décrivez votre besoin en quelques champs, YB Couverture vous répond rapidement.',
+  showPhone = false,
+  alloVoisinsOnly = false,
+} = Astro.props;
+---
+
+<div class="cta card">
+  <div>
+    <p class="eyebrow">{showPhone ? 'Urgence' : 'Devis gratuit'}</p>
+    <h2>{heading}</h2>
+    <p class="muted">{text}</p>
+  </div>
+  <div class="cta-actions">
+    {alloVoisinsOnly ? (
+      <a class="btn btn--primary" href={site.alloVoisinsUrl} target="_blank" rel="noopener noreferrer">
+        Contacter via AlloVoisins
+      </a>
+    ) : showPhone ? (
+      <>
+        <a class="btn btn--primary" href={site.phoneHref}>
+          Appeler {site.phone}
+        </a>
+        <a class="btn btn--ghost" href="/contact/">
+          Demander un devis
+        </a>
+      </>
+    ) : (
+      <>
+        <a class="btn btn--primary" href="/contact/">
+          Demander un devis
+        </a>
+        <a class="btn btn--ghost" href={site.alloVoisinsUrl} target="_blank" rel="noopener noreferrer">
+          Contacter via AlloVoisins
+        </a>
+      </>
+    )}
+  </div>
+</div>
+
+<style>
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    background: linear-gradient(135deg, #ffffff 0%, #fbeee4 100%);
+    border-radius: var(--radius-card);
+  }
+
+  .cta h2 {
+    margin: 0.35rem 0 0.5rem;
+  }
+
+  .cta .muted {
+    max-width: 40ch;
+    margin: 0;
+  }
+
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

@@ -1,0 +1,11 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import { serviceGroups } from '../../data/site';
+
+const group = serviceGroups.find((g) => g.slug === 'urgence-fuite-toiture')!;
+---
+
+<ServiceLayout
+  group={group}
+  description="Bâchage de toiture après une tempête et intervention urgente en cas de fuite de toiture dans le Val d'Oise. YB Couverture intervient 24h/24 et 7j/7."
+/>

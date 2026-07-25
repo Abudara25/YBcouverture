@@ -1,0 +1,11 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import { serviceGroups } from '../../data/site';
+
+const group = serviceGroups.find((g) => g.slug === 'charpente-isolation-etancheite')!;
+---
+
+<ServiceLayout
+  group={group}
+  description="Faîtage, isolation de toiture, résine de toiture et traitement de charpente dans le Val d'Oise. Devis gratuit avec YB Couverture."
+/>

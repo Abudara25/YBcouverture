@@ -1,0 +1,11 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import { serviceGroups } from '../../data/site';
+
+const group = serviceGroups.find((g) => g.slug === 'renovation-toiture-gouttieres')!;
+---
+
+<ServiceLayout
+  group={group}
+  description="Rénovation de toiture, pose de gouttières PVC ou zinc, nettoyage et démoussage de toiture dans le Val d'Oise. Devis gratuit avec YB Couverture."
+/>

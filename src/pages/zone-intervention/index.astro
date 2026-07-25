@@ -1,0 +1,110 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CtaAlloVoisins from '../../components/CtaAlloVoisins.astro';
+import { site, cityZones } from '../../data/site';
+---
+
+<Layout
+  title="Zone d'intervention : couvreur Val d'Oise, Yvelines & Oise"
+  description="YB Couverture intervient dans tout le Val d'Oise (95) et les communes limitrophes des Yvelines (78) et de l'Oise (60) : Poissy, Saint-Germain-en-Laye, Sartrouville, Conflans-Sainte-Honorine, Chambly, Méru et plus encore."
+  breadcrumbs={[{ name: "Zone d'intervention", path: '/zone-intervention/' }]}
+>
+  <section class="hero-zone container">
+    <span class="eyebrow">Zone d'intervention</span>
+    <h1 class="gradient-text">Un couvreur proche de chez vous</h1>
+    <p class="lead">
+      Basé à {site.baseCity} ({site.basePostalCode}), {site.name} intervient dans <strong>tout le Val d'Oise (95)</strong>{' '}
+      ainsi que dans les communes <strong>limitrophes des Yvelines (78) et de l'Oise (60)</strong> éligibles à
+      l'intervention. Cette proximité géographique permet des délais de déplacement courts, un atout précieux en
+      cas d'urgence, et une bonne connaissance du bâti local — pavillons individuels, maisons de ville et
+      toitures anciennes typiques de la région.
+    </p>
+  </section>
+
+  {cityZones.map((zone) => (
+    <section class="section container zone-dept">
+      <div class="zone-dept__head">
+        <span class="dept-badge">{zone.department} ({zone.code})</span>
+        <p class="muted">{zone.lead}</p>
+      </div>
+      <ul class="city-pills">
+        {zone.cities.map((city) => (
+          <li>{city}</li>
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  <section class="section container">
+    <p class="zone-note muted">
+      Cette liste n'est pas figée : selon la nature du chantier et sa disponibilité, {site.name} peut
+      également intervenir dans d'autres communes du Val d'Oise, des Yvelines ou de l'Oise limitrophes de sa
+      zone habituelle. En cas de doute sur la faisabilité d'un déplacement, le plus simple reste de décrire
+      votre projet par téléphone ou via le formulaire de contact.
+    </p>
+  </section>
+
+  <section class="section container">
+    <CtaAlloVoisins
+      heading="Votre commune n'est pas listée ?"
+      text="Contactez-nous quand même : nous intervenons ponctuellement au-delà de cette zone selon les chantiers."
+    />
+  </section>
+</Layout>
+
+<style>
+  .hero-zone {
+    padding: 6rem 0 2rem;
+  }
+
+  .hero-zone h1 {
+    margin: 1.25rem 0;
+  }
+
+  .lead {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 850px;
+  }
+
+  .zone-dept {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .zone-dept__head {
+    margin-bottom: 1.75rem;
+  }
+
+  .dept-badge {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-main);
+    padding-bottom: 0.4rem;
+    border-bottom: 3px solid var(--accent);
+  }
+
+  .zone-dept__head .muted {
+    margin: 0.85rem 0 0;
+    max-width: 60ch;
+  }
+
+  .city-pills {
+    gap: 0.7rem;
+  }
+
+  .city-pills li {
+    font-size: 0.95rem;
+    padding: 0.6rem 1.2rem;
+  }
+
+  .zone-note {
+    max-width: 850px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+</style>

@@ -1,0 +1,38 @@
+---
+import { site } from '../data/site';
+---
+
+<div class="ratings">
+  <a class="rating" href={site.alloVoisinsUrl} target="_blank" rel="noopener noreferrer" aria-label={`${site.rating} sur 5 — ${site.reviewCount} avis sur AlloVoisins`}>
+    <span class="stars" aria-hidden="true">★★★★★</span>
+    <span>{site.rating}/5</span>
+    <span class="muted">({site.reviewCount} avis AlloVoisins)</span>
+  </a>
+  <a class="rating" href={site.googleReviewsUrl} target="_blank" rel="noopener noreferrer" aria-label={`${site.googleRating} sur 5 — ${site.googleReviewCount} avis sur Google`}>
+    <span class="stars" aria-hidden="true">★★★★★</span>
+    <span>{site.googleRating}/5</span>
+    <span class="muted">({site.googleReviewCount} avis Google)</span>
+  </a>
+</div>
+
+<style>
+  .ratings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+  }
+
+  a.rating {
+    text-decoration: none;
+    color: inherit;
+    border-radius: 999px;
+    padding: 0.35rem 0.75rem;
+    transition: var(--transition);
+  }
+
+  a.rating:hover {
+    background: rgba(var(--accent-rgb), 0.08);
+    transform: translateY(-1px);
+  }
+</style>

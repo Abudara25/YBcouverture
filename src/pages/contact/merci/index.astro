@@ -1,0 +1,66 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { site } from '../../../data/site';
+---
+
+<Layout
+  title="Message envoyé"
+  description="Votre demande a bien été envoyée à YB Couverture."
+  noindex
+>
+  <section class="hero-merci container">
+    <div class="merci-icon">✓</div>
+    <h1 class="gradient-text">Merci, votre message est bien parti !</h1>
+    <p class="lead">
+      {site.name} vous répond dans les meilleurs délais. Pour une urgence, appelez directement au{' '}
+      <a href={site.phoneHref}>{site.phone}</a>.
+    </p>
+    <div class="merci-actions">
+      <a class="btn btn--primary" href="/">Retour à l'accueil</a>
+      <a class="btn btn--ghost" href={site.alloVoisinsUrl} target="_blank" rel="noopener noreferrer">
+        Voir le profil AlloVoisins
+      </a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero-merci {
+    padding: 8rem 0;
+    text-align: center;
+    max-width: 640px;
+  }
+
+  .merci-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    background: rgba(var(--accent-rgb), 0.1);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    font-weight: 800;
+  }
+
+  .lead {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin: 1rem 0 2rem;
+  }
+
+  .lead a {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .merci-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+</style>

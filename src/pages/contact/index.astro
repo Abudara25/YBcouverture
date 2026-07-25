@@ -1,0 +1,223 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RatingBadge from '../../components/RatingBadge.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import CtaAlloVoisins from '../../components/CtaAlloVoisins.astro';
+import { site } from '../../data/site';
+---
+
+<Layout
+  title="Contact & prise de rendez-vous"
+  description="Contactez YB Couverture par téléphone, email, formulaire en ligne ou via AlloVoisins : devis gratuit, réponse rapide, intervention dans tout le Val d'Oise."
+  breadcrumbs={[{ name: 'Contact', path: '/contact/' }]}
+>
+  <section class="hero-contact container">
+    <span class="eyebrow">Contact</span>
+    <h1 class="gradient-text">Prêt à démarrer ?</h1>
+    <p class="lead">
+      Laissez-nous vos coordonnées ou contactez-nous directement : {site.name} vous répond pour organiser
+      un diagnostic ou une intervention rapide dans tout le Val d'Oise.
+    </p>
+    <RatingBadge />
+  </section>
+
+  <section class="section container contact-grid">
+    <div class="card contact-info-card">
+      <div class="info-line">
+        <div class="info-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+        </div>
+        <div>
+          <strong>Téléphone direct</strong>
+          <a href={site.phoneHref}>{site.phone}</a>
+        </div>
+      </div>
+
+      <div class="info-line">
+        <div class="info-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+        </div>
+        <div>
+          <strong>Email</strong>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </div>
+      </div>
+
+      <div class="info-line" style="margin-bottom: 0;">
+        <div class="info-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </div>
+        <div>
+          <strong>Adresse & horaires</strong>
+          <span class="address">{site.address}</span>
+          <small class="muted">{site.hours}</small>
+        </div>
+      </div>
+
+      <iframe
+        class="map-embed"
+        src="https://www.google.com/maps?q=57+rue+de+la+Haute+Borne+95610+%C3%89ragny&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Localisation de YB Couverture à Éragny-sur-Oise"
+      ></iframe>
+
+      <div class="allovoisins-divider"></div>
+
+      <dl class="infos-list">
+        <dt>Entreprise</dt>
+        <dd>{site.name} — {site.owner}</dd>
+        <dt>SIRET</dt>
+        <dd>{site.siret}</dd>
+        <dt>Zone d'intervention</dt>
+        <dd><a href="/zone-intervention/">Voir toutes les villes desservies</a></dd>
+      </dl>
+    </div>
+
+    <ContactForm />
+  </section>
+
+  <section class="section container">
+    <CtaAlloVoisins
+      heading="Vous préférez passer par AlloVoisins ?"
+      text="YB Couverture traite aussi ses demandes de devis via AlloVoisins."
+      alloVoisinsOnly
+    />
+  </section>
+</Layout>
+
+<style>
+  .hero-contact {
+    padding: 6rem 0 3rem;
+    text-align: center;
+  }
+
+  .hero-contact h1 {
+    margin: 1.25rem 0;
+  }
+
+  .hero-contact .lead {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 780px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .hero-contact .rating {
+    justify-content: center;
+    display: flex;
+  }
+
+  .contact-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  .contact-info-card {
+    padding: 2.5rem;
+  }
+
+  .info-line {
+    margin-bottom: 1.75rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .info-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(var(--accent-rgb), 0.08);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .info-line strong {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .info-line a,
+  .info-line .address {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-main);
+    text-decoration: none;
+    display: block;
+  }
+
+  .info-line a:hover {
+    color: var(--accent);
+  }
+
+  .info-line small {
+    display: block;
+    margin-top: 0.2rem;
+    font-weight: 500;
+  }
+
+  .map-embed {
+    margin-top: 1rem;
+    width: 100%;
+    height: 240px;
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    display: block;
+  }
+
+  .allovoisins-divider {
+    height: 1px;
+    background: var(--glass-border);
+    margin: 2rem 0 1.5rem;
+  }
+
+  .infos-list {
+    display: grid;
+    gap: 0.25rem 1rem;
+    margin: 0;
+  }
+
+  .infos-list dt {
+    font-weight: 700;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .infos-list dt:first-child {
+    margin-top: 0;
+  }
+
+  .infos-list dd {
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  .infos-list dd a {
+    color: var(--accent);
+  }
+
+  @media (max-width: 780px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

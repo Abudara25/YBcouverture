@@ -1,0 +1,192 @@
+---
+import { site, serviceGroups, cityZones, socials } from '../data/site';
+const year = new Date().getFullYear();
+
+const socialIcons: Record<string, string> = {
+  Facebook: 'M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z',
+  Instagram: '',
+  TikTok:
+    'M9 0h1.98c.144 5.994 5.062 9.44 9.02 9.92v2.85c-2.9-.06-5.83-1.63-7.5-3.83v7.41c0 5.43-6.17 8.35-10.37 5.02-3.15-2.5-2.84-7.44.5-9.59 1.76-1.13 3.96-1.12 5.37-1.12v2.84c-1.28.02-3.03.11-4.04 1.25-1.57 1.75-.41 4.7 1.83 4.96 2.58.3 4.18-1.55 4.18-4.2V0Z',
+  YouTube:
+    'M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33 2.78 2.78 0 001.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.33 29 29 0 00-.46-5.33zM9.75 15.02V8.48l6.19 3.27-6.19 3.27z',
+};
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-brand">
+        <img src="/images/logo-mark.png" alt={site.name} />
+        <p class="brand__name">{site.name}</p>
+      </div>
+      <p class="muted">Couvreur professionnel — {site.baseCity} ({site.basePostalCode})</p>
+      <p class="muted">SIRET {site.siret}</p>
+      <a class="btn btn--primary" href="/contact/">
+        Demander un devis gratuit
+      </a>
+    </div>
+    <div>
+      <p class="footer-title">Nos métiers</p>
+      <ul class="footer-list">
+        {serviceGroups.map((group) => (
+          <li><a href={`/${group.slug}/`}>{group.shortTitle}</a></li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <p class="footer-title">Contact</p>
+      <ul class="footer-list">
+        <li><a href={site.phoneHref}>{site.phone}</a></li>
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li class="muted">{site.address}</li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-title">Zone d'intervention</p>
+      <ul class="footer-list">
+        {cityZones.map((z) => (
+          <li class="muted">{z.department} ({z.code})</li>
+        ))}
+      </ul>
+      <a href="/zone-intervention/">Voir toutes les villes →</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p class="muted">
+      © {year} {site.name} — {site.owner}. Tous droits réservés. ·
+      <a href="/mentions-legales/">Mentions légales</a>
+    </p>
+    <div class="social-links">
+      {socials.map((s) => (
+        <a href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name}>
+          {s.name === 'Instagram' ? (
+            <svg class="icon-stroke" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24"><path d={socialIcons[s.name]}></path></svg>
+          )}
+        </a>
+      ))}
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--glass-border);
+    padding: 4rem 0 2.5rem;
+    margin-top: 5rem;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-brand img {
+    height: 46px;
+    width: auto;
+  }
+
+  .site-footer .brand__name {
+    color: var(--text-main);
+    font-weight: 800;
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  .site-footer .muted {
+    color: var(--text-muted);
+  }
+
+  .site-footer a:not(.btn) {
+    color: var(--accent);
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  }
+
+  .footer-title {
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .footer-list a {
+    text-decoration: none;
+    color: var(--accent);
+  }
+
+  .footer-list a:hover {
+    text-decoration: underline;
+  }
+
+  .btn--primary {
+    margin-top: 1rem;
+  }
+
+  .footer-bottom {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--glass-border);
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 12px;
+  }
+
+  .social-links a {
+    width: 42px;
+    height: 42px;
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .social-links a:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px var(--accent-glow);
+  }
+
+  .social-links svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  .social-links svg.icon-stroke {
+    fill: none;
+  }
+</style>

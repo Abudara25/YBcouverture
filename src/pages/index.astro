@@ -1,0 +1,314 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CtaAlloVoisins from '../components/CtaAlloVoisins.astro';
+import RatingBadge from '../components/RatingBadge.astro';
+import Faq from '../components/Faq.astro';
+import Testimonials from '../components/Testimonials.astro';
+import { site, serviceGroups, cities, whyUs, process } from '../data/site';
+import { faq } from '../data/faq';
+
+const heroImage = '/images/renovation/demoussage-toiture.jpg';
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+};
+---
+
+<Layout
+  title="YB Couverture — Couvreur dans le Val d'Oise"
+  description="Couvreur à Éragny : rénovation de toiture, démoussage, gouttières, charpente et urgence fuite dans le Val d'Oise. Devis gratuit, intervention rapide."
+  jsonLd={faqJsonLd}
+>
+  <section class="hero container">
+    <span class="eyebrow">Artisan Couvreur · {site.baseCity} & Val d'Oise</span>
+    <h1 class="gradient-text">Votre toiture entre<br />des mains expertes.</h1>
+    <p class="lead">
+      De l'intervention d'urgence à la rénovation complète, {site.name} protège votre habitat avec la
+      précision d'un artisan local. Devis gratuit, disponibilité 24h/24 et 7j/7.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn--primary" href="/contact/">
+        Demander un devis gratuit
+      </a>
+      <a class="btn btn--ghost" href="/zone-intervention/">Voir la zone d'intervention</a>
+    </div>
+    <div class="hero-rating">
+      <RatingBadge />
+    </div>
+
+    <div class="hero-visual">
+      <img src={heroImage} alt="Chantier de toiture réalisé par YB Couverture" loading="eager" />
+      <div class="hero-stats">
+        <div>
+          <p class="stat-number">545+</p>
+          <p class="muted">demandes traitées</p>
+        </div>
+        <div>
+          <p class="stat-number">24/7</p>
+          <p class="muted">disponibilité</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container about">
+    <div class="about-text">
+      <p class="eyebrow">À propos</p>
+      <h2 style="margin-top: 1rem;">Un artisan, pas un intermédiaire</h2>
+      <p class="muted">{site.about}</p>
+    </div>
+  </section>
+
+  <section class="section container" id="pourquoi">
+    <div class="section-header">
+      <h2 class="gradient-text">Pourquoi nous choisir.</h2>
+      <p>Un artisan local, présent du premier appel à la dernière tuile.</p>
+    </div>
+    <div class="bento-grid why-grid">
+      {whyUs.map((reason, i) => (
+        <div class="bento-card">
+          <div class="card-icon">{i + 1}</div>
+          <h3>{reason.title}</h3>
+          <p>{reason.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section container">
+    <div class="section-header">
+      <h2 class="gradient-text">Notre expertise.</h2>
+      <p>Interventions maîtrisées sur tous types de couvertures.</p>
+    </div>
+    <div class="bento-grid">
+      {serviceGroups.map((group) => (
+        <a class="bento-card service-card" href={`/${group.slug}/`}>
+          <img class="service-card__thumb" src={group.heroImage} alt={group.title} loading="lazy" />
+          <p class="tag">{group.shortTitle}</p>
+          <h3>{group.title}</h3>
+          <p>{group.summary}</p>
+          <span class="service-card__link">En savoir plus →</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section container">
+    <div class="section-header">
+      <h2 class="gradient-text">Comment ça se passe.</h2>
+      <p>Du premier contact à la fin du chantier, en quatre étapes.</p>
+    </div>
+    <div class="process-grid">
+      {process.map((step, i) => (
+        <div class="card process-step">
+          <div class="card-icon">{i + 1}</div>
+          <h3>{step.title}</h3>
+          <p class="muted">{step.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section container" id="avis">
+    <div class="section-header">
+      <h2 class="gradient-text">Ce qu'en disent nos clients.</h2>
+      <p>Avis réels laissés sur le profil AlloVoisins de YB Couverture.</p>
+    </div>
+    <Testimonials />
+  </section>
+
+  <section class="section container zone-preview">
+    <div>
+      <p class="eyebrow">Zone d'intervention</p>
+      <h2 style="margin-top: 1rem;">Val d'Oise et communes voisines</h2>
+      <p class="muted" style="margin: 1rem 0 1.5rem;">
+        Basé à {site.baseCity}, {site.name} se déplace dans tout le Val d'Oise ainsi que dans plusieurs
+        communes des environs.
+      </p>
+      <a class="btn btn--ghost" href="/zone-intervention/">Voir toutes les villes</a>
+    </div>
+    <ul class="city-pills">
+      {cities.slice(0, 8).map((city) => (
+        <li>{city}</li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section container" id="faq">
+    <div class="section-header">
+      <h2 class="gradient-text">Questions fréquentes.</h2>
+      <p>Tout ce qu'on nous demande le plus souvent.</p>
+    </div>
+    <Faq />
+  </section>
+
+  <section class="section container">
+    <CtaAlloVoisins showPhone />
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    padding: 6rem 0 4rem;
+    text-align: center;
+  }
+
+  .hero h1 {
+    max-width: 900px;
+    margin: 2rem auto;
+  }
+
+  .hero .lead {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--text-muted);
+    max-width: 750px;
+    margin: 0 auto 3rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .hero-rating {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+  }
+
+  .hero-visual {
+    width: 100%;
+    position: relative;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+  }
+
+  .hero-visual:hover {
+    border-color: rgba(var(--accent-rgb), 0.2);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
+
+  .hero-visual img {
+    width: 100%;
+    height: 340px;
+    object-fit: cover;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1.75rem 1rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+  }
+
+  .hero-stats .stat-number {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--accent);
+    margin: 0;
+    text-align: center;
+  }
+
+  .hero-stats .muted {
+    text-align: center;
+  }
+
+  .about {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .about-text {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .about-text .muted {
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+
+  .process-step {
+    padding: 2rem;
+  }
+
+  .process-step h3 {
+    font-size: 1.05rem;
+    margin: 1.5rem 0 0.6rem;
+  }
+
+  .process-step p {
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .process-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .process-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .service-card {
+    text-decoration: none;
+  }
+
+  .service-card__thumb {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 18px;
+    margin-bottom: 1.25rem;
+  }
+
+  .service-card__link {
+    color: var(--accent);
+    font-weight: 700;
+    margin-top: auto;
+    padding-top: 1rem;
+  }
+
+  .zone-preview {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+
+  @media (max-width: 780px) {
+    .zone-preview {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

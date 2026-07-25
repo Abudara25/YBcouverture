@@ -1,0 +1,245 @@
+---
+import Layout from './Layout.astro';
+import CtaAlloVoisins from '../components/CtaAlloVoisins.astro';
+import { site, serviceGroups, type ServiceGroup } from '../data/site';
+
+interface Props {
+  group: ServiceGroup;
+  description: string;
+}
+
+const { group, description } = Astro.props;
+
+const otherGroups = serviceGroups.filter((g) => g.slug !== group.slug);
+
+const serviceJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: group.title,
+  provider: {
+    '@type': 'RoofingContractor',
+    name: site.name,
+  },
+  areaServed: "Val d'Oise et communes voisines",
+  description,
+};
+---
+
+<Layout
+  title={group.title}
+  description={description}
+  jsonLd={serviceJsonLd}
+  image={group.heroImage}
+  breadcrumbs={[{ name: group.shortTitle, path: `/${group.slug}/` }]}
+>
+  <section class="hero-service container">
+    <div class="hero-service__text">
+      <span class="eyebrow">{group.shortTitle}</span>
+      <h1 class="gradient-text">{group.tagline}</h1>
+      <p class="hero-service__lead">{group.intro}</p>
+      <div class="hero-service__actions">
+        {group.urgent ? (
+          <>
+            <a class="btn btn--primary" href={site.phoneHref}>
+              Appeler {site.phone}
+            </a>
+            <a class="btn btn--ghost" href="/contact/">
+              Demander un devis
+            </a>
+          </>
+        ) : (
+          <a class="btn btn--primary" href="/contact/">
+            Demander un devis gratuit
+          </a>
+        )}
+      </div>
+    </div>
+    <div class="hero-service__image">
+      <img
+        src={group.beforeAfterImage ?? group.heroImage}
+        alt={group.beforeAfterImage ? 'Toiture avant et après démoussage par YB Couverture' : (group.gallery[0]?.caption ?? group.title)}
+        loading="eager"
+      />
+    </div>
+  </section>
+
+  <section class="section container">
+    <div class="section-header" style="margin-bottom: 2rem;">
+      <h2 class="gradient-text">Nos prestations</h2>
+      <p>Le détail des interventions comprises dans ce pôle de métier.</p>
+    </div>
+    <div class="prestations-grid">
+      {group.items.map((item) => (
+        <div class="card service-detail">
+          <h3>{item.title}</h3>
+          <p class="muted">{item.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  {group.gallery.length > 0 && (
+    <section class="section container">
+      <div class="section-header" style="margin-bottom: 2rem;">
+        <h2 class="gradient-text">Nos réalisations</h2>
+        <p>Chantiers réels réalisés par {site.name}.</p>
+      </div>
+      <div class="gallery-grid" style={`--gallery-cols: ${Math.min(group.gallery.length, 3)};`}>
+        {group.gallery.map((photo) => (
+          <figure class="gallery-item">
+            <img src={photo.src} alt={photo.caption} loading="lazy" />
+            <figcaption>{photo.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="section container">
+    {group.urgent ? (
+      <CtaAlloVoisins
+        heading="Une fuite active ou des dégâts en cours ?"
+        text="Appelez directement YB Couverture pour une intervention rapide, ou passez par AlloVoisins si ce n'est pas urgent."
+        showPhone
+      />
+    ) : (
+      <CtaAlloVoisins />
+    )}
+  </section>
+
+  <section class="section container">
+    <p class="eyebrow">Autres interventions</p>
+    <div class="bento-grid" style="margin-top: 1.5rem;">
+      {otherGroups.map((g) => (
+        <a class="bento-card service-card" href={`/${g.slug}/`}>
+          <p class="tag">{g.shortTitle}</p>
+          <h3>{g.title}</h3>
+          <span class="service-card__link">En savoir plus →</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero-service {
+    padding: 6rem 0 2rem;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .hero-service h1 {
+    margin: 1.25rem 0;
+  }
+
+  .hero-service__lead {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin: 1rem 0 1.75rem;
+  }
+
+  .hero-service__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .hero-service__image {
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-lg);
+    aspect-ratio: 4 / 3;
+  }
+
+  .hero-service__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .prestations-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 700px) {
+    .prestations-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .service-detail h3 {
+    font-size: 1.1rem;
+    margin: 0 0 0.6rem;
+  }
+
+  .service-detail p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .service-card {
+    text-decoration: none;
+  }
+
+  .service-card__link {
+    color: var(--accent);
+    font-weight: 700;
+    margin-top: 1rem;
+    display: inline-block;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--gallery-cols, 3), 1fr);
+    gap: 1.25rem;
+  }
+
+  .gallery-item {
+    margin: 0;
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-sm);
+    background: var(--card-bg);
+    transition: var(--transition);
+  }
+
+  .gallery-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(var(--accent-rgb), 0.2);
+  }
+
+  .gallery-item img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+  }
+
+  .gallery-item figcaption {
+    padding: 0.85rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 900px) {
+    .hero-service {
+      grid-template-columns: 1fr;
+    }
+
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .gallery-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

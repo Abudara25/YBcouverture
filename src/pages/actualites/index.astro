@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const posts = (await getCollection('actualites')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const dateFormatter = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Layout
+  title="Actualités toiture & couverture"
+  description="Conseils d'entretien, réflexes en cas d'urgence et actualités de YB Couverture, couvreur dans le Val d'Oise."
+  breadcrumbs={[{ name: 'Actualités', path: '/actualites/' }]}
+>
+  <section class="hero-actus container">
+    <span class="eyebrow">Actualités</span>
+    <h1 class="gradient-text">Conseils et actualités toiture</h1>
+    <p class="lead">Nos conseils de couvreur pour entretenir votre toiture et réagir en cas d'urgence.</p>
+  </section>
+
+  <section class="section container">
+    <div class="bento-grid posts-grid">
+      {posts.map((post) => (
+        <a class="bento-card post-card" href={`/actualites/${post.id}/`}>
+          {post.data.tag && <p class="tag">{post.data.tag}</p>}
+          <h2>{post.data.title}</h2>
+          <p class="muted">{post.data.description}</p>
+          <time class="post-date" datetime={post.data.date.toISOString()}>
+            {dateFormatter.format(post.data.date)}
+          </time>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero-actus {
+    padding: 6rem 0 2rem;
+  }
+
+  .hero-actus h1 {
+    margin: 1.25rem 0;
+  }
+
+  .lead {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 750px;
+  }
+
+  .post-card {
+    text-decoration: none;
+  }
+
+  .post-card h2 {
+    font-size: 1.4rem;
+    margin: 1.25rem 0 0.6rem;
+  }
+
+  .post-date {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    display: block;
+  }
+</style>

@@ -1,0 +1,54 @@
+backend:
+  name: github
+  repo: "Abudara25/YBcouverture" # dépôt GitHub du site
+  branch: main
+  # Relais OAuth déployé séparément (GitHub n'autorise pas un site statique à
+  # s'authentifier seul). Voir NOTES-DECAP-CMS.md, section OAuth.
+  base_url: "REMPLACER_PAR_URL_PROJET_OAUTH" # ex. https://ybcouverture-cms-oauth.vercel.app
+
+# Permet de tester l'interface en local avec `npx decap-server` (aucun OAuth requis en local).
+local_backend: true
+
+# Publication directe sur la branche main (le plus simple pour le client).
+publish_mode: simple
+
+# Les images ajoutées dans un article sont commitées ici et servies à cette URL.
+media_folder: "public/images/actualites"
+public_folder: "/images/actualites"
+
+collections:
+  - name: "actualites"
+    label: "Actualités"
+    label_singular: "Actualité"
+    description: "Publiez et modifiez les articles du site (conseils, entretien, urgences...)."
+    folder: "src/content/actualites"
+    create: true
+    format: "frontmatter"
+    extension: "md"
+    identifier_field: "title"
+    slug: "{{slug}}"
+    fields:
+      - { label: "Titre", name: "title", widget: "string" }
+      - {
+          label: "Description courte",
+          name: "description",
+          widget: "text",
+          hint: "Résumé affiché sur la carte de l'article et dans les résultats Google (1 à 2 phrases).",
+        }
+      - {
+          label: "Date",
+          name: "date",
+          widget: "datetime",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+          format: "YYYY-MM-DD",
+        }
+      - {
+          label: "Catégorie",
+          name: "tag",
+          widget: "select",
+          required: false,
+          options: ["Entretien", "Urgence", "Conseils", "Actualité"],
+          hint: "Étiquette affichée sur l'article (facultatif).",
+        }
+      - { label: "Contenu de l'article", name: "body", widget: "markdown" }

@@ -1,0 +1,96 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import CtaAlloVoisins from '../../components/CtaAlloVoisins.astro';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('actualites');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const dateFormatter = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  author: { '@type': 'Organization', name: site.name },
+};
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  jsonLd={articleJsonLd}
+  breadcrumbs={[
+    { name: 'Actualités', path: '/actualites/' },
+    { name: post.data.title, path: `/actualites/${post.id}/` },
+  ]}
+>
+  <article class="section container">
+    <div class="article">
+      <a class="back-link" href="/actualites/">← Toutes les actualités</a>
+      {post.data.tag && <p class="tag">{post.data.tag}</p>}
+      <h1 class="gradient-text">{post.data.title}</h1>
+      <time class="post-date" datetime={post.data.date.toISOString()}>
+        {dateFormatter.format(post.data.date)}
+      </time>
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  <section class="section container">
+    <CtaAlloVoisins />
+  </section>
+</Layout>
+
+<style>
+  .article {
+    max-width: 70ch;
+    padding-top: 2rem;
+  }
+
+  .article h1 {
+    margin: 1rem 0;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    text-decoration: none;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .post-date {
+    display: block;
+    color: var(--text-muted);
+    margin: 0.5rem 0 2rem;
+  }
+
+  .prose :global(h2) {
+    margin-top: 2rem;
+  }
+
+  .prose :global(p),
+  .prose :global(li) {
+    color: var(--text-main);
+    font-size: 1.05rem;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 1.25rem;
+  }
+</style>

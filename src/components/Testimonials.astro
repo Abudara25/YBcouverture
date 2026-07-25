@@ -1,0 +1,99 @@
+---
+import { site, testimonials } from '../data/site';
+---
+
+<div class="testi-grid">
+  {testimonials.map((t) => (
+    <figure class="testi-card">
+      <div class="stars" aria-label="5 étoiles sur 5">★★★★★</div>
+      <blockquote>« {t.text} »</blockquote>
+      <figcaption>
+        <strong>{t.name}</strong>
+        <span>{t.city} · {t.date}</span>
+      </figcaption>
+    </figure>
+  ))}
+</div>
+
+<div class="testi-footer">
+  <a class="testi-link" href={site.alloVoisinsUrl} target="_blank" rel="noopener noreferrer">
+    Lire les {site.reviewCount} avis sur AlloVoisins →
+  </a>
+</div>
+
+<style>
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .testi-card {
+    margin: 0;
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-card);
+    padding: 2.25rem;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: var(--transition);
+  }
+
+  .testi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(var(--accent-rgb), 0.2);
+  }
+
+  .stars {
+    color: #e0940f;
+    letter-spacing: 0.1em;
+    font-size: 0.95rem;
+  }
+
+  blockquote {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-main);
+    font-style: italic;
+  }
+
+  figcaption {
+    margin-top: auto;
+  }
+
+  figcaption strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+  }
+
+  figcaption span {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .testi-footer {
+    text-align: center;
+    margin-top: 2.5rem;
+  }
+
+  .testi-link {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .testi-link:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 900px) {
+    .testi-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
