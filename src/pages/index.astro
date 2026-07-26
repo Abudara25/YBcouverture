@@ -271,6 +271,30 @@ const faqJsonLd = {
     line-height: 1.75;
   }
 
+  /* « Pourquoi nous choisir » : les cartes n'ont pas de visuel, seulement
+     une icône puis du texte. Le `margin-bottom: auto` de .card-icon plaque
+     ce texte en bas de carte, si bien qu'un paragraphe plus long remonte
+     son titre — les trois titres n'étaient pas sur la même ligne. */
+  .why-grid .card-icon {
+    margin-bottom: 0;
+  }
+
+  /* Le contenu repart du haut, ce qui suffit à aligner les icônes.
+     La subgrid aligne en plus les titres et les paragraphes entre eux :
+     chaque carte partage les rangées de la grille parente. */
+  @supports (grid-template-rows: subgrid) {
+    .why-grid {
+      grid-auto-rows: auto;
+    }
+
+    .why-grid .bento-card {
+      display: grid;
+      grid-template-rows: subgrid;
+      grid-row: span 3;
+      row-gap: 0;
+    }
+  }
+
   .process-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
