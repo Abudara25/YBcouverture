@@ -10,7 +10,7 @@ import { site } from '../../../data/site';
 >
   <section class="hero-merci container">
     <div class="merci-icon">✓</div>
-    <h1 class="gradient-text">Merci, votre message est bien parti !</h1>
+    <h1 class="gradient-text">Merci, votre message est bien parti !</h1>
     <p class="lead">
       {site.name} vous répond dans les meilleurs délais. Pour une urgence, appelez directement au{' '}
       <a href={site.phoneHref}>{site.phone}</a>.
@@ -26,7 +26,7 @@ import { site } from '../../../data/site';
 
 <style>
   .hero-merci {
-    padding: 8rem 0;
+    padding: clamp(4rem, 15vw, 8rem) 0;
     text-align: center;
     max-width: 640px;
   }

@@ -313,7 +313,9 @@ export const serviceGroups: ServiceGroup[] = [
     urgent: true,
     title: 'Urgence fuite toiture & bâchage',
     shortTitle: 'Urgence & dépannage',
-    tagline: 'Une fuite, une tempête ? On intervient vite',
+    //   = espace insécable : évite que le « ? » soit rejeté seul en début
+    // de ligne quand le titre passe sur plusieurs lignes (mobile)
+    tagline: 'Une fuite, une tempête ? On intervient vite',
     summary: 'Bâchage et dépannage rapide en cas de fuite ou de dégâts après une tempête.',
     intro:
       "Une tuile arrachée par le vent, une branche tombée sur le toit, une fuite qui apparaît brutalement après un orage : ces situations n'attendent pas. Plus une toiture endommagée reste exposée, plus les dégâts s'étendent à la charpente, à l'isolation et aux plafonds. YB Couverture propose un service d'urgence disponible 24h/24 et 7j/7 pour sécuriser rapidement votre toiture, le temps qu'une réparation durable puisse être planifiée.",

@@ -98,7 +98,7 @@ const serviceJsonLd = {
   <section class="section container">
     {group.urgent ? (
       <CtaAlloVoisins
-        heading="Une fuite active ou des dégâts en cours ?"
+        heading="Une fuite active ou des dégâts en cours ?"
         text="Appelez directement YB Couverture pour une intervention rapide, ou passez par AlloVoisins si ce n'est pas urgent."
         showPhone
       />
@@ -123,10 +123,10 @@ const serviceJsonLd = {
 
 <style>
   .hero-service {
-    padding: 6rem 0 2rem;
+    padding: clamp(3.5rem, 12vw, 6rem) 0 2rem;
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
-    gap: 3rem;
+    gap: clamp(2rem, 5vw, 3rem);
     align-items: center;
   }
 
@@ -135,7 +135,7 @@ const serviceJsonLd = {
   }
 
   .hero-service__lead {
-    font-size: 1.1rem;
+    font-size: clamp(1rem, 0.5vw + 0.9rem, 1.1rem);
     color: var(--text-muted);
     margin: 1rem 0 1.75rem;
   }
@@ -163,7 +163,7 @@ const serviceJsonLd = {
   .prestations-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+    gap: var(--gap-grid);
   }
 
   @media (max-width: 700px) {
@@ -196,7 +196,7 @@ const serviceJsonLd = {
   .gallery-grid {
     display: grid;
     grid-template-columns: repeat(var(--gallery-cols, 3), 1fr);
-    gap: 1.25rem;
+    gap: var(--gap-grid);
   }
 
   .gallery-item {
@@ -232,14 +232,23 @@ const serviceJsonLd = {
       grid-template-columns: 1fr;
     }
 
+    .hero-service__image {
+      aspect-ratio: 16 / 10;
+    }
+
     .gallery-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
+  /* Sur mobile, une photo en 3/4 pleine largeur serait démesurément haute */
   @media (max-width: 560px) {
     .gallery-grid {
       grid-template-columns: 1fr;
+    }
+
+    .gallery-item img {
+      aspect-ratio: 4 / 3;
     }
   }
 </style>

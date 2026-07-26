@@ -46,7 +46,7 @@ import { site, cityZones } from '../../data/site';
 
   <section class="section container">
     <CtaAlloVoisins
-      heading="Votre commune n'est pas listée ?"
+      heading="Votre commune n'est pas listée ?"
       text="Contactez-nous quand même : nous intervenons ponctuellement au-delà de cette zone selon les chantiers."
     />
   </section>
@@ -54,7 +54,7 @@ import { site, cityZones } from '../../data/site';
 
 <style>
   .hero-zone {
-    padding: 6rem 0 2rem;
+    padding: clamp(3.5rem, 12vw, 6rem) 0 2rem;
   }
 
   .hero-zone h1 {
@@ -62,24 +62,24 @@ import { site, cityZones } from '../../data/site';
   }
 
   .lead {
-    font-size: 1.1rem;
+    font-size: clamp(1rem, 0.5vw + 0.9rem, 1.1rem);
     color: var(--text-muted);
     max-width: 850px;
   }
 
   .zone-dept {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding-top: clamp(1.5rem, 5vw, 2rem);
+    padding-bottom: clamp(1.5rem, 5vw, 2rem);
   }
 
   .zone-dept__head {
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
   }
 
   .dept-badge {
     display: inline-block;
     font-family: var(--font-display);
-    font-size: 1.4rem;
+    font-size: clamp(1.2rem, 4vw, 1.4rem);
     font-weight: 600;
     color: var(--text-main);
     padding-bottom: 0.4rem;
@@ -92,12 +92,12 @@ import { site, cityZones } from '../../data/site';
   }
 
   .city-pills {
-    gap: 0.7rem;
+    gap: 0.55rem;
   }
 
   .city-pills li {
-    font-size: 0.95rem;
-    padding: 0.6rem 1.2rem;
+    font-size: clamp(0.85rem, 3vw, 0.95rem);
+    padding: 0.5rem clamp(0.85rem, 3vw, 1.2rem);
   }
 
   .zone-note {

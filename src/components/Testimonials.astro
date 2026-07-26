@@ -25,7 +25,7 @@ import { site, testimonials } from '../data/site';
   .testi-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    gap: var(--gap-grid);
   }
 
   .testi-card {
@@ -33,7 +33,7 @@ import { site, testimonials } from '../data/site';
     background: var(--card-bg);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-card);
-    padding: 2.25rem;
+    padding: clamp(1.35rem, 4.5vw, 2.25rem);
     box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
@@ -78,10 +78,12 @@ import { site, testimonials } from '../data/site';
 
   .testi-footer {
     text-align: center;
-    margin-top: 2.5rem;
+    margin-top: clamp(1.75rem, 5vw, 2.5rem);
   }
 
   .testi-link {
+    display: inline-block;
+    padding: 0.6rem 0.9rem;
     color: var(--accent);
     font-weight: 700;
     text-decoration: none;
@@ -91,7 +93,13 @@ import { site, testimonials } from '../data/site';
     text-decoration: underline;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1024px) {
+    .testi-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 700px) {
     .testi-grid {
       grid-template-columns: 1fr;
     }

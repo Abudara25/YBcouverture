@@ -31,9 +31,9 @@ const { items = faq } = Astro.props;
   .faq-item {
     background: var(--card-bg);
     border: 1px solid var(--glass-border);
-    border-radius: 20px;
+    border-radius: clamp(16px, 4vw, 20px);
     box-shadow: var(--shadow-sm);
-    padding: 0.5rem 1.5rem;
+    padding: 0.25rem clamp(1.1rem, 4vw, 1.5rem);
     transition: var(--transition);
   }
 
@@ -47,9 +47,11 @@ const { items = faq } = Astro.props;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 1.1rem 0;
+    min-height: var(--tap);
+    padding: 0.9rem 0;
     cursor: pointer;
     font-weight: 600;
+    font-size: clamp(0.95rem, 3.4vw, 1rem);
     color: var(--text-main);
     list-style: none;
   }

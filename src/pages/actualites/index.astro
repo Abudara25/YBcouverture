@@ -38,7 +38,7 @@ const dateFormatter = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 
 
 <style>
   .hero-actus {
-    padding: 6rem 0 2rem;
+    padding: clamp(3.5rem, 12vw, 6rem) 0 2rem;
   }
 
   .hero-actus h1 {
@@ -46,7 +46,7 @@ const dateFormatter = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 
   }
 
   .lead {
-    font-size: 1.1rem;
+    font-size: clamp(1rem, 0.5vw + 0.9rem, 1.1rem);
     color: var(--text-muted);
     max-width: 750px;
   }
@@ -56,7 +56,7 @@ const dateFormatter = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 
   }
 
   .post-card h2 {
-    font-size: 1.4rem;
+    font-size: clamp(1.2rem, 3.5vw, 1.4rem);
     margin: 1.25rem 0 0.6rem;
   }
 

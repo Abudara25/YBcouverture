@@ -53,7 +53,7 @@ const socialIcons: Record<string, string> = {
   </div>
   <div class="container footer-bottom">
     <p class="muted">
-      © {year} {site.name} — {site.owner}. Tous droits réservés. ·
+      © {year} {site.name} — {site.owner}. Tous droits réservés. ·{' '}
       <a href="/mentions-legales/">Mentions légales</a>
     </p>
     <div class="social-links">
@@ -77,8 +77,8 @@ const socialIcons: Record<string, string> = {
 <style>
   .site-footer {
     border-top: 1px solid var(--glass-border);
-    padding: 4rem 0 2.5rem;
-    margin-top: 5rem;
+    padding: clamp(2.5rem, 8vw, 4rem) 0 clamp(1.75rem, 5vw, 2.5rem);
+    margin-top: clamp(3rem, 9vw, 5rem);
   }
 
   .footer-brand {
@@ -108,10 +108,18 @@ const socialIcons: Record<string, string> = {
     color: var(--accent);
   }
 
+  /* Zone tactile confortable pour tous les liens des colonnes
+     (les icônes sociales, en .footer-bottom, gardent leur mise en forme) */
+  .footer-grid a:not(.btn) {
+    display: inline-block;
+    padding: 0.25rem 0;
+  }
+
   .footer-grid {
     display: grid;
-    gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: clamp(1.75rem, 5vw, 2rem);
+    /* 230px : largeur mini pour que l'adresse e-mail tienne sans être coupée */
+    grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
   }
 
   .footer-title {
@@ -126,9 +134,13 @@ const socialIcons: Record<string, string> = {
     padding: 0;
     display: grid;
     gap: 0.5rem;
+    font-size: 0.95rem;
+    overflow-wrap: anywhere;
   }
 
   .footer-list a {
+    display: inline-block;
+    padding: 0.2rem 0;
     text-decoration: none;
     color: var(--accent);
   }
@@ -142,7 +154,7 @@ const socialIcons: Record<string, string> = {
   }
 
   .footer-bottom {
-    margin-top: 3rem;
+    margin-top: clamp(2rem, 6vw, 3rem);
     padding-top: 1.5rem;
     border-top: 1px solid var(--glass-border);
     font-size: 0.85rem;
@@ -150,17 +162,23 @@ const socialIcons: Record<string, string> = {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 1.5rem;
+    gap: 1.25rem;
+  }
+
+  .footer-bottom p a {
+    display: inline-block;
+    padding: 0.3rem 0;
   }
 
   .social-links {
     display: flex;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
   .social-links a {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     background: var(--card-bg);
     border: 1px solid var(--glass-border);
     border-radius: 50%;
@@ -188,5 +206,16 @@ const socialIcons: Record<string, string> = {
 
   .social-links svg.icon-stroke {
     fill: none;
+  }
+
+  @media (max-width: 560px) {
+    .footer-bottom {
+      justify-content: center;
+      text-align: center;
+    }
+
+    .footer-bottom .muted {
+      margin: 0;
+    }
   }
 </style>

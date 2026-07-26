@@ -26,7 +26,7 @@ import { site, serviceGroups } from '../data/site';
       Devis gratuit
     </a>
     <button class="burger" id="nav-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="Ouvrir le menu">
-      <span></span><span></span>
+      <span class="burger__bars" aria-hidden="true"><span></span><span></span></span>
     </button>
   </div>
   <nav id="mobile-nav" class="mobile-menu" aria-label="Navigation mobile">
@@ -44,20 +44,56 @@ import { site, serviceGroups } from '../data/site';
 <script>
   const toggle = document.getElementById('nav-toggle');
   const mobileNav = document.getElementById('mobile-nav');
-  toggle?.addEventListener('click', () => {
-    const isOpen = mobileNav?.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', String(Boolean(isOpen)));
-  });
+
+  if (toggle && mobileNav) {
+    const setOpen = (open: boolean) => {
+      mobileNav.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+      document.body.classList.toggle('nav-open', open);
+    };
+
+    toggle.addEventListener('click', () => setOpen(!mobileNav.classList.contains('open')));
+
+    // Referme après une navigation, un clic à l'extérieur ou la touche Échap
+    mobileNav.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as Node;
+      if (
+        mobileNav.classList.contains('open') &&
+        !mobileNav.contains(target) &&
+        !toggle.contains(target)
+      ) {
+        setOpen(false);
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    // Sécurité : en repassant en desktop, on rétablit un état propre
+    window.matchMedia('(min-width: 900px)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
 </script>
 
 <style>
   .site-header {
+    --header-x: 12px;
     position: sticky;
-    top: 16px;
+    top: 12px;
     left: 0;
     right: 0;
     z-index: 200;
-    padding: 0 16px;
+    padding: 0 var(--header-x);
     display: flex;
     justify-content: center;
   }
@@ -70,28 +106,30 @@ import { site, serviceGroups } from '../data/site';
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     border-radius: var(--radius-btn);
-    padding: 8px 10px 8px 22px;
+    padding: 8px 8px 8px 14px;
     display: flex;
     align-items: center;
-    gap: 2rem;
+    justify-content: space-between;
+    gap: 0.75rem;
     box-shadow: var(--shadow-md);
     position: relative;
   }
 
   .logo {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 3.4vw, 1rem);
     font-weight: 700;
     letter-spacing: -0.02em;
     display: flex;
     align-items: center;
     gap: 8px;
+    min-width: 0;
     color: var(--text-main);
     text-decoration: none;
     white-space: nowrap;
   }
 
   .logo img {
-    height: 52px;
+    height: clamp(38px, 11vw, 52px);
     width: auto;
     flex-shrink: 0;
   }
@@ -167,6 +205,7 @@ import { site, serviceGroups } from '../data/site';
   }
 
   .btn-nav {
+    display: none;
     background: var(--text-main);
     color: #fff;
     padding: 0.65rem 1.3rem;
@@ -175,6 +214,7 @@ import { site, serviceGroups } from '../data/site';
     font-weight: 600;
     text-decoration: none;
     white-space: nowrap;
+    flex-shrink: 0;
     transition: var(--transition);
   }
 
@@ -186,22 +226,46 @@ import { site, serviceGroups } from '../data/site';
 
   .burger {
     display: flex;
+    align-items: center;
+    justify-content: center;
     background: none;
     border: none;
     cursor: pointer;
-    width: 40px;
-    height: 40px;
-    padding: 10px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    flex-shrink: 0;
+    border-radius: 50%;
+    transition: var(--transition);
+  }
+
+  .burger:hover {
+    background: rgba(var(--accent-rgb), 0.08);
+  }
+
+  .burger__bars {
+    display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 5px;
+    width: 20px;
   }
 
-  .burger span {
+  .burger span span {
     display: block;
+    width: 100%;
     height: 2px;
     background: var(--text-main);
     border-radius: 2px;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .burger[aria-expanded='true'] span span:first-child {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+
+  .burger[aria-expanded='true'] span span:last-child {
+    transform: translateY(-3.5px) rotate(-45deg);
   }
 
   .mobile-menu {
@@ -209,52 +273,77 @@ import { site, serviceGroups } from '../data/site';
     flex-direction: column;
     position: absolute;
     top: calc(100% + 8px);
-    left: 16px;
-    right: 16px;
-    background: rgba(255, 255, 255, 0.95);
+    left: var(--header-x, 12px);
+    right: var(--header-x, 12px);
+    max-height: calc(100dvh - 120px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
     border-radius: 24px;
     transform: translateY(-10px);
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: var(--transition);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease,
+      visibility 0.25s;
     box-shadow: var(--shadow-lg);
-    overflow: hidden;
   }
 
   .mobile-menu.open {
     transform: translateY(0);
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
   }
 
   .mobile-menu a {
-    display: block;
-    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 0.85rem 1.35rem;
     color: var(--text-main);
     font-weight: 500;
     text-decoration: none;
     border-bottom: 1px solid var(--glass-border);
   }
 
+  .mobile-menu a:active {
+    background: rgba(var(--accent-rgb), 0.06);
+  }
+
   .mobile-menu a:last-child {
     color: var(--accent);
-    font-weight: 600;
+    font-weight: 700;
     border-bottom: none;
   }
 
+  /* Desktop : navigation complète, plus de burger ni de menu déroulant */
   @media (min-width: 900px) {
+    .site-header {
+      --header-x: 16px;
+      top: 16px;
+    }
+
+    .nav-island {
+      justify-content: flex-start;
+      gap: 2rem;
+      padding: 8px 10px 8px 22px;
+    }
+
     .nav-links {
       display: flex;
     }
 
-    .burger {
-      display: none;
+    .btn-nav {
+      display: inline-block;
     }
 
+    .burger,
     .mobile-menu {
-      display: none !important;
+      display: none;
     }
   }
 </style>

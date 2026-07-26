@@ -42,11 +42,11 @@ const nextURL = new URL('/contact/merci/', Astro.site);
 
 <style>
   .contact-form-card {
-    padding: 2.5rem;
+    padding: var(--card-pad);
   }
 
   .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
   }
 
   .form-group label {
@@ -61,14 +61,25 @@ const nextURL = new URL('/contact/merci/', Astro.site);
 
   .form-input {
     width: 100%;
+    min-height: var(--tap);
     background: #faf7f2;
     border: 1px solid var(--glass-border);
     border-radius: 16px;
-    padding: 0.9rem 1.1rem;
+    padding: 0.85rem 1.1rem;
     color: var(--text-main);
     font-family: var(--font-sans);
-    font-size: 0.95rem;
+    /* 16px minimum : en dessous, Safari iOS zoome à la mise au point du champ */
+    font-size: 1rem;
     transition: var(--transition);
+  }
+
+  select.form-input {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236d5f52' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 18px;
+    padding-right: 2.75rem;
   }
 
   .form-input:focus {

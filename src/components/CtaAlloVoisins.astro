@@ -9,7 +9,7 @@ interface Props {
 }
 
 const {
-  heading = 'Un projet ou une urgence toiture ?',
+  heading = 'Un projet ou une urgence toiture ?',
   text = 'Décrivez votre besoin en quelques champs, YB Couverture vous répond rapidement.',
   showPhone = false,
   alloVoisinsOnly = false,
@@ -55,7 +55,8 @@ const {
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 1.5rem;
+    gap: clamp(1.25rem, 4vw, 1.5rem);
+    padding: var(--card-pad);
     background: linear-gradient(135deg, #ffffff 0%, #fbeee4 100%);
     border-radius: var(--radius-card);
   }
@@ -73,5 +74,13 @@ const {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
+  }
+
+  /* Sous 560px les boutons passent en pleine largeur (règle globale) :
+     le conteneur doit suivre pour éviter des boutons décalés */
+  @media (max-width: 560px) {
+    .cta-actions {
+      width: 100%;
+    }
   }
 </style>
