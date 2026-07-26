@@ -144,11 +144,15 @@ button {
   pointer-events: none;
 }
 
+/* Gouttière latérale du site. Elle est posée sur l'axe horizontal uniquement :
+   toute règle qui espace un bloc verticalement doit utiliser `padding-block`,
+   jamais la forme raccourcie `padding: X 0` — celle-ci remettrait cette
+   gouttière à zéro et collerait le texte aux bords sur mobile. */
 .container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--container-x);
+  padding-inline: var(--container-x);
 }
 
 h1, h2, h3 {
@@ -193,11 +197,11 @@ p {
 }
 
 .section {
-  padding: var(--section-y) 0;
+  padding-block: var(--section-y);
 }
 
 .section--tight {
-  padding: var(--section-y-tight) 0;
+  padding-block: var(--section-y-tight);
 }
 
 .section-header {
