@@ -100,6 +100,20 @@ body.nav-open {
   overflow: hidden;
 }
 
+/* Pages en `heroFlush` : le header, normalement `sticky`, occupe une bande dans
+   le flux avant <main>. Sur un héros pleine largeur cette bande laissait voir
+   le fond de page au-dessus de la photo. `fixed` le sort du flux, la photo
+   remonte donc jusqu'en haut et le header flotte par-dessus.
+
+   `height: 0` aurait aussi libéré la place, mais le menu mobile est positionné
+   en `top: 100%` par rapport au header : sa hauteur doit rester réelle.
+
+   La règle vit ici et non dans Header.astro parce que les styles scopés
+   d'Astro ne peuvent pas cibler <body>, qui est hors du composant. */
+body.hero-flush .site-header {
+  position: fixed;
+}
+
 img,
 svg,
 iframe {
@@ -474,7 +488,13 @@ ul.check-list li::before {
 
 /* Apparition douce des sections au défilement (uniquement si JS actif et animations non réduites) */
 @media (prefers-reduced-motion: no-preference) {
-  html.js main section {
+  /* La première section est exclue : elle est toujours dans le viewport au
+     chargement, l'animer ne révèle donc rien qu'on n'ait déjà sous les yeux.
+     Elle contient en plus le plus gros élément de la page, dont l'affichage
+     était retardé de 0,7 s pour rien. Sur l'accueil, le décalage de 24 px
+     laissait en prime voir le fond de page au-dessus du héros pendant toute
+     la transition. */
+  html.js main section:not(:first-child) {
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);

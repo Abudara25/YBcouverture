@@ -28,6 +28,7 @@ const faqJsonLd = {
   title="YB Couverture — Couvreur dans le Val d'Oise"
   description="Couvreur à Éragny : rénovation de toiture, démoussage, gouttières, charpente et urgence fuite dans le Val d'Oise. Devis gratuit, intervention rapide."
   jsonLd={faqJsonLd}
+  heroFlush
 >
   <section class="hero">
     {/* La photo est un vrai <img> plutôt qu'un background CSS : elle peut ainsi
@@ -183,7 +184,12 @@ const faqJsonLd = {
   .hero {
     position: relative;
     isolation: isolate;
-    padding-block: clamp(3.5rem, 12vw, 7rem) clamp(3rem, 9vw, 5rem);
+    /* La borne basse (6,5rem) n'est pas un choix esthétique : le header est
+       maintenant flottant, et à 360 px son bord inférieur tombe à 74 px
+       (12 px d'offset + 62 px d'îlot). En dessous de ~6,5rem le surtitre
+       passerait derrière lui. À 768 px le bord descend à 82 px, à partir de
+       900 px à 86 px — 6,5rem couvre les trois. */
+    padding-block: clamp(6.5rem, 12vw, 7rem) clamp(3rem, 9vw, 5rem);
     text-align: center;
     /* Teinte de repli tant que la photo n'est pas chargée : le texte clair
        reste lisible même sur une connexion lente. */

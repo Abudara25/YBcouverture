@@ -11,9 +11,17 @@ interface Props {
   image?: string;
   noindex?: boolean;
   breadcrumbs?: { name: string; path: string }[];
+  /**
+   * Sort le header du flux pour que la première section démarre en haut de
+   * page, le header flottant par-dessus. Réservé aux pages dont la section
+   * d'ouverture a un fond à elle (le héros photo de l'accueil) et assez de
+   * marge haute pour passer sous le header — sinon le contenu s'y glisse
+   * dessous et devient illisible.
+   */
+  heroFlush?: boolean;
 }
 
-const { title, description, jsonLd, image = '/images/hero/banniere-toiture.jpg', noindex = false, breadcrumbs } = Astro.props;
+const { title, description, jsonLd, image = '/images/hero/banniere-toiture.jpg', noindex = false, breadcrumbs, heroFlush = false } = Astro.props;
 const ogImageURL = new URL(image, Astro.site);
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const siteURL = Astro.site?.toString().replace(/\/$/, '') ?? '';
@@ -142,7 +150,7 @@ const structuredData = [defaultJsonLd, ...(breadcrumbLd ? [breadcrumbLd] : []), 
       <script type="application/ld+json" set:html={JSON.stringify(data)} />
     ))}
   </head>
-  <body>
+  <body class={heroFlush ? 'hero-flush' : undefined}>
     <div class="ambient-glow-1"></div>
     <div class="ambient-glow-2"></div>
     <Header />
