@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /admin/
-
-Sitemap: https://y-bcouverture.vercel.app/sitemap-index.xml
