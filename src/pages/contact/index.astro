@@ -62,13 +62,46 @@ import { site } from '../../data/site';
         </div>
       </div>
 
-      <iframe
-        class="map-embed"
-        src="https://www.google.com/maps?q=57+rue+de+la+Haute+Borne+95610+%C3%89ragny&output=embed"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        title="Localisation de YB Couverture à Éragny-sur-Oise"
-      ></iframe>
+      {/* La carte Google dépose des cookies tiers dès son chargement. Elle
+          n'est donc insérée qu'après un clic explicite du visiteur : sans ce
+          clic, le site ne dépose aucun cookie et n'a pas besoin de bandeau
+          de consentement. */}
+      <div class="map-zone">
+        <button type="button" class="map-consent" id="map-consent">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <span class="map-consent__title">Afficher la carte</span>
+          <span class="map-consent__note">
+            Charge Google Maps, qui dépose des cookies sur votre appareil.
+          </span>
+        </button>
+        {/* L'iframe est écrite ici, et non créée en JavaScript, pour deux
+            raisons : elle reçoit l'attribut de portée d'Astro et hérite donc
+            des styles scopés ci-dessous, et une iframe sans attribut `src`
+            n'émet aucune requête réseau. Le clic ne fait que renseigner le
+            `src` et retirer l'attribut `hidden`. */}
+        <iframe
+          class="map-embed"
+          id="map-frame"
+          hidden
+          data-src="https://www.google.com/maps?q=57+rue+de+la+Haute+Borne+95610+%C3%89ragny&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Localisation de YB Couverture à Éragny-sur-Oise"></iframe>
+        <p class="map-fallback muted">
+          Ou ouvrir dans{' '}
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=57+rue+de+la+Haute+Borne+95610+%C3%89ragny"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Google Maps
+          </a>
+          .
+        </p>
+      </div>
 
       <div class="allovoisins-divider"></div>
 
@@ -93,6 +126,20 @@ import { site } from '../../data/site';
     />
   </section>
 </Layout>
+
+<script>
+  // Affiche la carte uniquement sur action du visiteur : c'est le fait de
+  // renseigner `src` qui déclenche la connexion à Google, et donc les cookies.
+  const boutonCarte = document.getElementById('map-consent');
+  const carte = document.getElementById('map-frame') as HTMLIFrameElement | null;
+
+  boutonCarte?.addEventListener('click', () => {
+    if (!carte) return;
+    carte.src = carte.dataset.src ?? '';
+    carte.hidden = false;
+    boutonCarte.remove();
+  });
+</script>
 
 <style>
   .hero-contact {
@@ -142,7 +189,7 @@ import { site } from '../../data/site';
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--accent);
+    color: var(--accent-text);
     flex-shrink: 0;
   }
 
@@ -167,7 +214,7 @@ import { site } from '../../data/site';
   }
 
   .info-line a:hover {
-    color: var(--accent);
+    color: var(--accent-text);
   }
 
   .info-line small {
@@ -176,13 +223,61 @@ import { site } from '../../data/site';
     font-weight: 500;
   }
 
-  .map-embed {
+  .map-zone {
     margin-top: 1rem;
+  }
+
+  .map-consent,
+  .map-embed {
     width: 100%;
     height: clamp(190px, 45vw, 240px);
     border: 1px solid var(--glass-border);
     border-radius: clamp(18px, 4vw, 24px);
     display: block;
+  }
+
+  /* `display: block` ci-dessus l'emporterait sur la règle par défaut du
+     navigateur pour [hidden] : il faut la rétablir explicitement. */
+  .map-embed[hidden] {
+    display: none;
+  }
+
+  .map-consent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 1.25rem;
+    background: rgba(var(--accent-rgb), 0.05);
+    color: var(--accent-text);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .map-consent:hover {
+    background: rgba(var(--accent-rgb), 0.1);
+  }
+
+  .map-consent__title {
+    font-weight: 700;
+  }
+
+  .map-consent__note {
+    max-width: 34ch;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  .map-fallback {
+    margin: 0.6rem 0 0;
+    font-size: 0.85rem;
+  }
+
+  .map-fallback a {
+    color: var(--accent-text);
   }
 
   .allovoisins-divider {
@@ -213,7 +308,7 @@ import { site } from '../../data/site';
   }
 
   .infos-list dd a {
-    color: var(--accent);
+    color: var(--accent-text);
   }
 
   @media (max-width: 780px) {

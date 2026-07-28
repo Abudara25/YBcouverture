@@ -5,7 +5,7 @@ import { site, serviceGroups } from '../data/site';
 <header class="site-header">
   <div class="nav-island">
     <a href="/" class="logo">
-      <img src="/images/logo-mark.png" alt={site.name} />
+      <img src="/images/logo-mark.png" alt={site.name} width="221" height="300" />
       {site.name}
     </a>
     <nav class="nav-links" aria-label="Navigation principale">
@@ -201,7 +201,7 @@ import { site, serviceGroups } from '../data/site';
 
   .nav__dropdown li a:hover {
     background: rgba(var(--accent-rgb), 0.08);
-    color: var(--accent);
+    color: var(--accent-text);
   }
 
   .btn-nav {
@@ -315,7 +315,7 @@ import { site, serviceGroups } from '../data/site';
   }
 
   .mobile-menu a:last-child {
-    color: var(--accent);
+    color: var(--accent-text);
     font-weight: 700;
     border-bottom: none;
   }

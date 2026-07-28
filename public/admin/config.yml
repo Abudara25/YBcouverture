@@ -6,8 +6,8 @@ backend:
   # s'authentifier seul). Voir NOTES-DECAP-CMS.md, section OAuth.
   base_url: "https://ybcouverture-cms.vercel.app"
 
-# Permet de tester l'interface en local avec `npx decap-server` (aucun OAuth requis en local).
-local_backend: true
+# Pour tester l'interface en local : ajouter `local_backend: true` puis lancer
+# `npx decap-server` (ce réglage ne doit pas rester en production).
 
 # Publication directe sur la branche main (le plus simple pour le client).
 publish_mode: simple

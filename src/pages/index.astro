@@ -1,4 +1,5 @@
 ---
+import { webpSrc } from '../lib/images';
 import Layout from '../layouts/Layout.astro';
 import CtaAlloVoisins from '../components/CtaAlloVoisins.astro';
 import RatingBadge from '../components/RatingBadge.astro';
@@ -7,7 +8,7 @@ import Testimonials from '../components/Testimonials.astro';
 import { site, serviceGroups, cities, whyUs, process } from '../data/site';
 import { faq } from '../data/faq';
 
-const heroImage = '/images/renovation/demoussage-toiture.jpg';
+const heroImage = '/images/hero/chantier-maison-eragny.jpg';
 
 const faqJsonLd = {
   '@context': 'https://schema.org',
@@ -28,33 +29,51 @@ const faqJsonLd = {
   description="Couvreur à Éragny : rénovation de toiture, démoussage, gouttières, charpente et urgence fuite dans le Val d'Oise. Devis gratuit, intervention rapide."
   jsonLd={faqJsonLd}
 >
-  <section class="hero container">
-    <span class="eyebrow">Artisan Couvreur · {site.baseCity} & Val d'Oise</span>
-    <h1 class="gradient-text">Votre toiture entre <br class="br-wide" />des mains expertes.</h1>
-    <p class="lead">
-      De l'intervention d'urgence à la rénovation complète, {site.name} protège votre habitat avec la
-      précision d'un artisan local. Devis gratuit, disponibilité 24h/24 et 7j/7.
-    </p>
-    <div class="hero-actions">
-      <a class="btn btn--primary" href="/contact/">
-        Demander un devis gratuit
-      </a>
-      <a class="btn btn--ghost" href="/zone-intervention/">Voir la zone d'intervention</a>
-    </div>
-    <div class="hero-rating">
-      <RatingBadge />
+  <section class="hero">
+    {/* La photo est un vrai <img> plutôt qu'un background CSS : elle peut ainsi
+        être préchargée, déclinée en WebP et servie en version allégée sur
+        mobile. Le voile sombre par-dessus garantit la lisibilité du texte
+        quelle que soit la zone de l'image (le ciel est très clair). */}
+    <div class="hero__media" aria-hidden="true">
+      <picture>
+        <source
+          media="(max-width: 760px)"
+          srcset="/images/hero/chantier-maison-eragny-760.webp"
+          type="image/webp"
+        />
+        <source
+          media="(max-width: 760px)"
+          srcset="/images/hero/chantier-maison-eragny-760.jpg"
+        />
+        {webpSrc(heroImage) && <source srcset={webpSrc(heroImage)} type="image/webp" />}
+        <img src={heroImage} alt="" loading="eager" fetchpriority="high" decoding="async" />
+      </picture>
     </div>
 
-    <div class="hero-visual">
-      <img src={heroImage} alt="Chantier de toiture réalisé par YB Couverture" loading="eager" />
+    <div class="hero__inner container">
+      <span class="eyebrow">Artisan Couvreur · {site.baseCity} & Val d'Oise</span>
+      <h1>Votre toiture entre <br class="br-wide" />des mains expertes.</h1>
+      <p class="lead">
+        De l'intervention d'urgence à la rénovation complète, {site.name} protège votre habitat avec la
+        précision d'un artisan local. Devis gratuit, disponibilité 24h/24 et 7j/7.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn--primary" href="/contact/">
+          Demander un devis gratuit
+        </a>
+        <a class="btn btn--ghost" href="/zone-intervention/">Voir la zone d'intervention</a>
+      </div>
+      <div class="hero-rating">
+        <RatingBadge />
+      </div>
       <div class="hero-stats">
         <div>
           <p class="stat-number">545+</p>
-          <p class="muted">demandes traitées</p>
+          <p class="stat-label">demandes traitées</p>
         </div>
         <div>
           <p class="stat-number">24/7</p>
-          <p class="muted">disponibilité</p>
+          <p class="stat-label">disponibilité</p>
         </div>
       </div>
     </div>
@@ -92,7 +111,10 @@ const faqJsonLd = {
     <div class="bento-grid">
       {serviceGroups.map((group) => (
         <a class="bento-card service-card" href={`/${group.slug}/`}>
-          <img class="service-card__thumb" src={group.heroImage} alt={group.title} loading="lazy" />
+          <picture>
+            {webpSrc(group.heroImage) && <source srcset={webpSrc(group.heroImage)} type="image/webp" />}
+            <img class="service-card__thumb" src={group.heroImage} alt={group.title} loading="lazy" decoding="async" />
+          </picture>
           <p class="tag">{group.shortTitle}</p>
           <h3>{group.title}</h3>
           <p>{group.summary}</p>
@@ -157,14 +179,67 @@ const faqJsonLd = {
 </Layout>
 
 <style>
+  /* === Héros : photo en pleine largeur, contenu par-dessus === */
   .hero {
-    padding-block: clamp(3.5rem, 12vw, 6rem) clamp(2.5rem, 8vw, 4rem);
+    position: relative;
+    isolation: isolate;
+    padding-block: clamp(3.5rem, 12vw, 7rem) clamp(3rem, 9vw, 5rem);
     text-align: center;
+    /* Teinte de repli tant que la photo n'est pas chargée : le texte clair
+       reste lisible même sur une connexion lente. */
+    background: #131a26;
+    overflow: hidden;
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Cadrage sur la maison plutôt que sur la pelouse du premier plan. */
+    object-position: 50% 38%;
+  }
+
+  /* Voile sombre. Dimensionné pour le pire cas : un texte blanc posé sur le
+     pixel le plus clair de la photo (les nuages, du blanc pur). À 0,64
+     d'opacité le rapport tombe à 5,6:1, au-delà du seuil AA de 4,5:1 — la
+     lisibilité ne dépend donc jamais de la zone de l'image. */
+  .hero__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(13, 20, 33, 0.64) 0%,
+      rgba(13, 20, 33, 0.7) 55%,
+      rgba(13, 20, 33, 0.76) 100%
+    );
+  }
+
+  .hero__inner {
+    position: relative;
   }
 
   .hero h1 {
     max-width: 900px;
     margin: clamp(1.25rem, 4vw, 2rem) auto;
+    color: #fff;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  /* Le surtitre est assombri, et non éclairci : une pastille claire
+     remonterait le fond sous le texte blanc à 3,5:1. En sombre, le rapport
+     monte à 8,3:1. */
+  .hero .eyebrow {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    backdrop-filter: blur(6px);
   }
 
   /* Le retour à la ligne manuel n'a de sens qu'à partir du moment
@@ -181,7 +256,7 @@ const faqJsonLd = {
 
   .hero .lead {
     font-size: clamp(1rem, 2vw, 1.25rem);
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.95);
     max-width: 750px;
     margin: 0 auto clamp(1.75rem, 5vw, 3rem);
   }
@@ -200,59 +275,49 @@ const faqJsonLd = {
     margin-bottom: clamp(2rem, 6vw, 3rem);
   }
 
-  .hero-visual {
-    width: 100%;
-    position: relative;
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-card);
-    overflow: hidden;
-    box-shadow: var(--shadow-md);
-    transition: var(--transition);
+  /* La pastille d'avis est rendue par RatingBadge : ses styles sont scopés
+     dans ce composant, il faut donc `:global` pour les adapter au fond sombre. */
+  .hero-rating :global(.rating) {
+    color: #fff;
   }
 
-  .hero-visual:hover {
-    border-color: rgba(var(--accent-rgb), 0.2);
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-4px);
+  .hero-rating :global(.muted) {
+    color: rgba(255, 255, 255, 0.82);
   }
 
-  .hero-visual img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    max-height: 340px;
-    object-fit: cover;
+  .hero-rating :global(.stars) {
+    /* L'or sombre choisi pour les fonds clairs tomberait à 1,8:1 ici. */
+    color: #ffc94d;
+  }
+
+  .hero-rating :global(a.rating:hover) {
+    background: rgba(255, 255, 255, 0.14);
   }
 
   .hero-stats {
     display: flex;
-    gap: clamp(1.5rem, 8vw, 3rem);
+    gap: clamp(1.5rem, 8vw, 3.5rem);
     flex-wrap: wrap;
     justify-content: center;
-    padding: clamp(1.25rem, 4vw, 1.75rem) 1rem;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(16px);
+    margin-top: clamp(2.25rem, 6vw, 3.25rem);
+    padding-top: clamp(1.5rem, 4vw, 2rem);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
   }
 
   .hero-stats .stat-number {
     font-size: clamp(1.7rem, 6vw, 2.2rem);
     font-weight: 800;
-    color: var(--accent);
+    color: #fff;
     margin: 0;
     text-align: center;
     line-height: 1.2;
   }
 
-  .hero-stats .muted {
+  .hero-stats .stat-label {
     text-align: center;
     font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.82);
     margin: 0.25rem 0 0;
-  }
-
-  @media (max-width: 560px) {
-    .hero-visual img {
-      aspect-ratio: 4 / 3;
-    }
   }
 
   .about {
@@ -340,7 +405,7 @@ const faqJsonLd = {
   }
 
   .service-card__link {
-    color: var(--accent);
+    color: var(--accent-text);
     font-weight: 700;
     margin-top: auto;
     padding-top: 1rem;

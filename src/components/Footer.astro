@@ -16,7 +16,7 @@ const socialIcons: Record<string, string> = {
   <div class="container footer-grid">
     <div>
       <div class="footer-brand">
-        <img src="/images/logo-mark.png" alt={site.name} />
+        <img src="/images/logo-mark.png" alt={site.name} width="221" height="300" />
         <p class="brand__name">{site.name}</p>
       </div>
       <p class="muted">Couvreur professionnel — {site.baseCity} ({site.basePostalCode})</p>
@@ -105,7 +105,7 @@ const socialIcons: Record<string, string> = {
   }
 
   .site-footer a:not(.btn) {
-    color: var(--accent);
+    color: var(--accent-text);
   }
 
   /* Zone tactile confortable pour tous les liens des colonnes
@@ -142,7 +142,7 @@ const socialIcons: Record<string, string> = {
     display: inline-block;
     padding: 0.2rem 0;
     text-decoration: none;
-    color: var(--accent);
+    color: var(--accent-text);
   }
 
   .footer-list a:hover {
@@ -191,7 +191,7 @@ const socialIcons: Record<string, string> = {
   }
 
   .social-links a:hover {
-    background: var(--accent);
+    background: var(--accent-solid);
     border-color: var(--accent);
     color: #fff;
     transform: translateY(-3px);

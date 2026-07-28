@@ -66,7 +66,7 @@ const { items = faq } = Astro.props;
     height: 28px;
     border-radius: 50%;
     background: rgba(var(--accent-rgb), 0.08);
-    color: var(--accent);
+    color: var(--accent-text);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,7 +77,7 @@ const { items = faq } = Astro.props;
 
   .faq-item[open] .faq-icon {
     transform: rotate(45deg);
-    background: var(--accent);
+    background: var(--accent-solid);
     color: #fff;
   }
 

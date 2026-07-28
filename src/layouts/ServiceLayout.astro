@@ -1,4 +1,5 @@
 ---
+import { webpSrc } from '../lib/images';
 import Layout from './Layout.astro';
 import CtaAlloVoisins from '../components/CtaAlloVoisins.astro';
 import { site, serviceGroups, type ServiceGroup } from '../data/site';
@@ -55,11 +56,18 @@ const serviceJsonLd = {
       </div>
     </div>
     <div class="hero-service__image">
-      <img
-        src={group.beforeAfterImage ?? group.heroImage}
-        alt={group.beforeAfterImage ? 'Toiture avant et après démoussage par YB Couverture' : (group.gallery[0]?.caption ?? group.title)}
-        loading="eager"
-      />
+      <picture>
+        {webpSrc(group.beforeAfterImage ?? group.heroImage) && (
+          <source srcset={webpSrc(group.beforeAfterImage ?? group.heroImage)} type="image/webp" />
+        )}
+        <img
+          src={group.beforeAfterImage ?? group.heroImage}
+          alt={group.beforeAfterImage ? 'Toiture avant et après démoussage par YB Couverture' : (group.gallery[0]?.caption ?? group.title)}
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </picture>
     </div>
   </section>
 
@@ -87,7 +95,10 @@ const serviceJsonLd = {
       <div class="gallery-grid" style={`--gallery-cols: ${Math.min(group.gallery.length, 3)};`}>
         {group.gallery.map((photo) => (
           <figure class="gallery-item">
-            <img src={photo.src} alt={photo.caption} loading="lazy" />
+            <picture>
+              {webpSrc(photo.src) && <source srcset={webpSrc(photo.src)} type="image/webp" />}
+              <img src={photo.src} alt={photo.caption} loading="lazy" decoding="async" />
+            </picture>
             <figcaption>{photo.caption}</figcaption>
           </figure>
         ))}
@@ -187,7 +198,7 @@ const serviceJsonLd = {
   }
 
   .service-card__link {
-    color: var(--accent);
+    color: var(--accent-text);
     font-weight: 700;
     margin-top: 1rem;
     display: inline-block;
