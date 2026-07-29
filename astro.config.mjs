@@ -4,6 +4,6 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://y-bcouverture.vercel.app',
+  site: 'https://yb-couverture.fr',
   integrations: [sitemap()],
 });
