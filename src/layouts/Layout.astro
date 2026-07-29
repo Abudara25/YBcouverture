@@ -148,7 +148,7 @@ const structuredData = [defaultJsonLd, ...(breadcrumbLd ? [breadcrumbLd] : []), 
     </script>
 
     {structuredData.map((data) => (
-      <script type="application/ld+json" set:html={JSON.stringify(data)} />
+      <script type="application/ld+json" set:html={JSON.stringify(data).replace(/</g, '\\u003c')} />
     ))}
   </head>
   <body class={heroFlush ? 'hero-flush' : undefined}>
