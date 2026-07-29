@@ -1,0 +1,99 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site, serviceGroups } from '../data/site';
+---
+
+<Layout
+  title="Page introuvable"
+  description="Cette page n'existe pas ou a été déplacée. Retrouvez les services de YB Couverture, couvreur à Éragny-sur-Oise."
+  noindex
+>
+  <section class="hero-404 container">
+    <p class="code-404">404</p>
+    <h1 class="gradient-text">Cette page n'existe pas</h1>
+    <p class="lead">
+      Le lien est peut-être erroné, ou la page a été déplacée. Voici de quoi retrouver votre
+      chemin — et pour une fuite en cours, appelez plutôt directement au{' '}
+      <a href={site.phoneHref}>{site.phone}</a>.
+    </p>
+
+    <div class="actions-404">
+      <a class="btn btn--primary" href="/">Retour à l'accueil</a>
+      <a class="btn btn--ghost" href="/contact/">Demander un devis</a>
+    </div>
+
+    <nav class="liens-404" aria-label="Nos métiers">
+      {serviceGroups.map((group) => (
+        <a href={`/${group.slug}/`}>{group.shortTitle}</a>
+      ))}
+      <a href="/zone-intervention/">Zone d'intervention</a>
+      <a href="/actualites/">Actualités</a>
+    </nav>
+  </section>
+</Layout>
+
+<style>
+  .hero-404 {
+    padding-block: clamp(4rem, 15vw, 8rem);
+    text-align: center;
+    max-width: 640px;
+  }
+
+  .code-404 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 14vw, 5.5rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent-text);
+  }
+
+  .hero-404 h1 {
+    margin: 0.75rem 0 0;
+  }
+
+  .lead {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin: 1rem 0 2rem;
+  }
+
+  .lead a {
+    color: var(--accent-text);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .actions-404 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .liens-404 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    justify-content: center;
+    margin-top: clamp(2rem, 8vw, 3rem);
+    padding-top: clamp(1.5rem, 6vw, 2rem);
+    border-top: 1px solid var(--glass-border);
+    font-size: 0.95rem;
+  }
+
+  .liens-404 a {
+    /* Cible tactile : le lien seul ne fait que la hauteur du texte. */
+    display: flex;
+    align-items: center;
+    min-height: var(--tap);
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .liens-404 a:hover {
+    color: var(--accent-text);
+  }
+</style>
